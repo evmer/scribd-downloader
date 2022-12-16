@@ -109,9 +109,6 @@ with sync_playwright() as playwright:
 
 			# render page
 			content = f'<style>{style}{font_style}</style>{html}'
-			f = open(f'{cache_dir}/{chapter_no}_{page_no}.html', 'w')
-			f.write(content)
-			f.close()
 			render_page.set_content(content)
 
 			# print pdf
