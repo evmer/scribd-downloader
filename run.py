@@ -7,10 +7,12 @@ import sys
 import time
 import shutil
 
-BOOK_URL = sys.argv[1]
+ZOOM = 0.625
+
+book_url = sys.argv[1]
 
 # create cache dir
-book_filename = BOOK_URL.split('/')[5]
+book_filename = book_url.split('/')[5]
 cache_dir = f'{os.getcwd()}/{book_filename}'
 try:
 	os.mkdir(cache_dir)
@@ -45,7 +47,7 @@ with sync_playwright() as playwright:
 	context.set_extra_http_headers({'Accept-Language': 'en-US,en;q=0.9'})
 
 	page = context.new_page()
-	page.goto(BOOK_URL.replace('book', 'read'))
+	page.goto(book_url.replace('book', 'read'))
 
 	if 'Browser limit exceeded' in page.content():
 		context.close()
@@ -102,10 +104,11 @@ with sync_playwright() as playwright:
 			html = html.replace('src="/', 'src="https://www.scribd.com/')
 
 			# set page size
-			width, height = re.findall('width: ([0-9.]+)px; height: ([0-9.]+)px;', html)[0]
-			style = f'@page {{ size: {width}px {height}px; margin: 0; }} @media print {{ html, body {{ height: {height}px; width: {width}px;}}}}'
+			match = re.findall('width: ([0-9.]+)px; height: ([0-9.]+)px;', html)[0]
+			width, height = float(match[0]), float(match[1])
+			style = f'@page {{ size: {width*ZOOM}px {height*ZOOM}px; margin: 0; }} @media print {{ html, body {{ height: {height*ZOOM}px; width: {width*ZOOM}px;}}}}'
 			html = re.sub('data-colindex="0" style="', 'data-colindex="0" x="', html)
-			html = re.sub('position: absolute.*?"', f'overflow: hidden; height: {height}px; width: {width}px; white-space: nowrap;"', html)
+			html = re.sub('position: absolute.*?"', f'overflow: hidden; height: {height}px; width: {width}px; white-space: nowrap; zoom: {ZOOM};"', html)
 
 			# render page
 			content = f'<style>{style}{font_style}</style>{html}'
