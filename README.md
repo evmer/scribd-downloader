@@ -32,7 +32,7 @@ Watch the [demonstration video](https://youtu.be/sbMb_EOFNTA).
 ![image](https://user-images.githubusercontent.com/10036897/208117827-afc6087e-fc76-4bca-8138-be839113d666.png)
 
 ## TODO:
-- [ ] Scale/reduce pdf page size
+- [X] Scale/reduce pdf page size
 - [ ] Render links in the PDFs
 - [ ] Add EPUB conversion feature
 - [ ] Add support for Documents
