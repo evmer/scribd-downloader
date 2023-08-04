@@ -54,9 +54,11 @@ with sync_playwright() as playwright:
 		browser.close()
 		sys.exit('You have tried to read this from too many computers or web browsers recently, and will need to wait up to 24 hours before returning to this book.')
 
-	# retrieve fonts
-	font_style = page.locator('#fontfaces').inner_html()
-
+	# retrieve fonts	
+	try:
+		font_style = page.locator('#fontfaces').inner_html()
+	except:
+		font_style = ""
 	# open display menu
 	page.locator('.icon-ic_displaysettings').wait_for(state='visible')
 	page.evaluate("() => document.querySelector('.icon-ic_displaysettings').click()")
