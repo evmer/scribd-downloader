@@ -1,0 +1,6 @@
+# Generated Files
+session.json
+*.pdf
+
+# macOS System Files
+.DS_Store
